@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#ffffff">
+<title>Disk</title>
+<meta name="description" content="我的网盘入口">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232d3142'/%3E%3Ctext x='50' y='70' font-size='52' font-family='system-ui,sans-serif' font-weight='800' fill='%2352d6a8' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#2d3142;
+    --accent:#52d6a8;
+    --muted:#8a90a2;
+    --line:#eceef2;
+    --bg:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+    display:flex;align-items:flex-start;justify-content:center;
+    padding:clamp(40px,10vh,110px) 24px 60px;
+  }
+  main{width:100%;max-width:620px}
+
+  header{margin-bottom:clamp(28px,5vh,44px);text-align:center}
+  h1{font-size:clamp(26px,4.6vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.2}
+  header p{margin-top:10px;color:var(--muted);font-size:14px}
+
+  .list{border-top:1px solid var(--line)}
+  a.item{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:18px 6px;border-bottom:1px solid var(--line);
+    text-decoration:none;color:inherit;
+    transition:background-color .16s ease;
+  }
+  a.item:hover{background:#f8fafb}
+  .left{display:flex;flex-direction:column;gap:3px;min-width:0}
+  .name{font-size:17px;font-weight:700;letter-spacing:-.01em}
+  .note{font-size:12.5px;color:var(--muted)}
+  .right{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+  .url{font-size:13px;color:var(--muted);max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .arrow{color:var(--accent);font-size:17px;font-weight:700;line-height:1}
+  a.item:hover .arrow{transform:translateX(2px)}
+  .arrow{transition:transform .16s ease}
+
+  .state{padding:40px 6px;text-align:center;color:var(--muted);font-size:14px}
+  footer{margin-top:34px;text-align:center}
+  footer a{color:var(--muted);font-size:12.5px;text-decoration:none;border-bottom:1px solid var(--line)}
+  footer a:hover{color:var(--ink)}
+
+  @media(max-width:520px){
+    .url{display:none}
+    .name{font-size:16px}
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Disk</h1>
+    <p>我的网盘入口</p>
+  </header>
+
+  <div id="list" class="list">
+    <div class="state">加载中…</div>
+  </div>
+
+  <footer><a href="/tsz">管理</a></footer>
+</main>
+
+<script>
+(function () {
+  var el = document.getElementById('list');
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function host(u) {
+    try { return new URL(u).host.replace(/^www\./, ''); } catch (e) { return u; }
+  }
+
+  function render(links) {
+    if (!links || !links.length) {
+      el.innerHTML = '<div class="state">还没有链接</div>';
+      return;
+    }
+    el.innerHTML = links.map(function (l) {
+      return '<a class="item" href="' + esc(l.url) + '" target="_blank" rel="noopener">' +
+        '<span class="left">' +
+          '<span class="name">' + esc(l.name) + '</span>' +
+          (l.note ? '<span class="note">' + esc(l.note) + '</span>' : '') +
+        '</span>' +
+        '<span class="right">' +
+          '<span class="url">' + esc(host(l.url)) + '</span>' +
+          '<span class="arrow">→</span>' +
+        '</span>' +
+      '</a>';
+    }).join('');
+  }
+
+  fetch('/links', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (j && j.ok) render(j.links);
+      else el.innerHTML = '<div class="state">加载失败：' + esc((j && j.error) || '未知错误') + '</div>';
+    })
+    .catch(function () {
+      el.innerHTML = '<div class="state">加载失败，请刷新重试</div>';
+    });
+})();
+</script>
+</body>
+</html>

@@ -1,14 +1,14 @@
 {
   "links": [
     {
-      "name": "夸克网盘",
-      "url": "https://pan.quark.cn",
-      "note": "Quark Disk"
-    },
-    {
       "name": "华为云盘",
       "url": "https://cloud.huawei.com",
       "note": "Huawei Cloud"
+    },
+    {
+      "name": "夸克网盘",
+      "url": "https://pan.quark.cn",
+      "note": "Quark Disk"
     },
     {
       "name": "iCloud",

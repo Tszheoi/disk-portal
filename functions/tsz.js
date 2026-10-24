@@ -141,7 +141,11 @@ const LOGIN = (err) => `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="u
 .login{max-width:340px;margin:18vh auto;padding:0 18px}
 .login h1{font-size:20px;margin-bottom:6px}
 .login p{color:#8b93a7;font-size:13px;margin:0 0 20px}
-</style></head><body><div class="login">
+</style><link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head><body><div class="login">
 <h1>链接管理</h1><p>请输入密码</p>
 <form method="POST" action="/tsz">
 <input type="hidden" name="action" value="login">
@@ -152,7 +156,11 @@ ${err ? `<div class="err">${esc(err)}</div>` : ''}
 
 const ADMIN = (links) => `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>链接管理</title>
-<style>${STYLE}</style></head><body><div class="wrap">
+<style>${STYLE}</style><link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+</head><body><div class="wrap">
 <div class="top"><h1>链接管理</h1>
 <div class="row"><a class="btn ghost sm" href="/" target="_blank">看首页</a>
 <button class="btn ghost sm" onclick="logout()">退出</button></div></div>

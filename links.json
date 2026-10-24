@@ -6,14 +6,14 @@
       "note": "Huawei Cloud"
     },
     {
-      "name": "iCloud",
-      "url": "https://www.icloud.com",
-      "note": "Apple"
-    },
-    {
       "name": "夸克网盘",
       "url": "https://pan.quark.cn",
       "note": "Quark Disk"
+    },
+    {
+      "name": "iCloud",
+      "url": "https://www.icloud.com",
+      "note": "Apple"
     }
   ]
 }

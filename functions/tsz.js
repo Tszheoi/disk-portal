@@ -164,6 +164,7 @@ ${links.length ? links.map((l, i) => `
   <a class="url" href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.url)}</a>
   <span class="acts">
     <button class="btn ghost sm" onclick="moveUp(${i})">↑</button>
+    <button class="btn ghost sm" onclick="moveDown(${i})">↓</button>
     <button class="btn danger sm" onclick="del(${i})">删除</button>
   </span>
 </div>`).join('') : '<div class="hint">还没有链接，用下面的表单添加</div>'}
@@ -200,6 +201,12 @@ function add(){
 function del(i){
   if(!confirm('删除「' + links[i].name + '」？')) return;
   var next = links.slice(); next.splice(i,1); save(next, '已删除');
+}
+function moveDown(i){
+  if(i >= links.length - 1) return;
+  var next = links.slice();
+  var t = next[i+1]; next[i+1] = next[i]; next[i] = t;
+  save(next, '已排序');
 }
 function moveUp(i){
   if(i<=0) return;
